@@ -10,4 +10,4 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-wget -P data/$1 https://data.macrogen.com/~macro3/HiSeq02/20220523/HN00169897/$1.fastq.gz
+fastqc -o data/$1_2/fastqc data/$1_2/$1_2.fastq.gz

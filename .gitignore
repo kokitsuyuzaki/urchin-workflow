@@ -1,6 +1,9 @@
 .DS_Store
 *.sh.*
 
+.java
+.cache
+.fontconfig
 .snakemake
 data
 logs
