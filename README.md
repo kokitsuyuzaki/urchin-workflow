@@ -1,5 +1,7 @@
 # urchin-workflow
 
+![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/dag.png?raw=true)
+
 ## Requirements
 - Bash: GNU bash, version 4.2.46(1)-release (x86_64-redhat-linux-gnu)
 - Snakemake: 6.5.3
