@@ -1,0 +1,7 @@
+.DS_Store
+*.sh.*
+
+.snakemake
+data
+logs
+benchmarks
