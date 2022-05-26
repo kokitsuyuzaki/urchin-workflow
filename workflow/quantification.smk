@@ -10,11 +10,11 @@ URCHIN_SAMPLES, = glob_wildcards('data/{sample}_1.fastq.gz')
 
 rule all:
     input:
-        expand('data/{db}/{type}/{sample}/Aligned.out.sam',
+        expand('data/{db}/{type}/{sample}/star/Aligned.out.sam',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw'],
             sample=URCHIN_SAMPLES),
-        expand('data/{db}/{type}/{sample}/quant.sf',
+        expand('data/{db}/{type}/{sample}/salmon/quant.sf',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw'],
             sample=URCHIN_SAMPLES)
@@ -28,7 +28,7 @@ rule star_raw:
         'data/{sample}_1.fastq.gz',
         'data/{sample}_2.fastq.gz'
     output:
-        'data/{db}/raw/{sample}/Aligned.out.sam'
+        'data/{db}/raw/{sample}/star/Aligned.out.sam'
     resources:
         mem_gb=100
     container:
@@ -38,15 +38,15 @@ rule star_raw:
     log:
         'logs/star_raw_{db}_{sample}.log'
     shell:
-        'src/star.sh {input} {wildcards.sample} >& {log}'
+        'src/star.sh {input} {output} >& {log}'
 
 rule star_trim:
     input:
         'data/{db}/star_index',
-        'data/{db}/trim/{sample}_1_paired.fastq.gz',
-        'data/{db}/trim/{sample}_2_paired.fastq.gz'
+        'data/{db}/trim/{sample}_1/{sample}_1_paired.fastq.gz',
+        'data/{db}/trim/{sample}_2/{sample}_2_paired.fastq.gz'
     output:
-        'data/{db}/trim/{sample}/Aligned.out.sam'
+        'data/{db}/trim/{sample}/star/Aligned.out.sam'
     resources:
         mem_gb=100
     container:
@@ -56,7 +56,7 @@ rule star_trim:
     log:
         'logs/star_trim_{db}_{sample}.log'
     shell:
-        'src/star.sh {input} {wildcards.sample} >& {log}'
+        'src/star.sh {input} {output} >& {log}'
 
 # rule featurecounts:
 #     input:
@@ -84,7 +84,7 @@ rule salmon_count_raw:
         'data/{sample}_1.fastq.gz',
         'data/{sample}_2.fastq.gz'
     output:
-        'data/{db}/raw/{sample}/quant.sf'
+        'data/{db}/raw/{sample}/salmon/quant.sf'
     resources:
         mem_gb=100
     container:
@@ -99,10 +99,10 @@ rule salmon_count_raw:
 rule salmon_count_trim:
     input:
         'data/{db}/salmon_index',
-        'data/{db}/trim/{sample}_1_paired.fastq.gz',
-        'data/{db}/trim/{sample}_2_paired.fastq.gz'
+        'data/{db}/trim/{sample}_1/{sample}_1_paired.fastq.gz',
+        'data/{db}/trim/{sample}_2/{sample}_2_paired.fastq.gz'
     output:
-        'data/{db}/trim/{sample}/quant.sf'
+        'data/{db}/trim/{sample}/salmon/quant.sf'
     resources:
         mem_gb=100
     container:

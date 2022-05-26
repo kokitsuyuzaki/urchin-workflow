@@ -10,14 +10,6 @@ URCHIN_SAMPLES, = glob_wildcards('data/{sample}_1.fastq.gz')
 
 rule all:
     input:
-        expand('data/{db}/{type}/{sample}_1/fastqc',
-            db=['hpbase', 'echinobase'],
-            type=['raw', 'trim'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/{type}/{sample}_2/fastqc',
-            db=['hpbase', 'echinobase'],
-            type=['raw', 'trim'],
-            sample=URCHIN_SAMPLES),
         expand('data/{db}/trim/{sample}_1/fastqc/{sample}_1_paired_fastqc.html',
             db=['hpbase', 'echinobase'],
             sample=URCHIN_SAMPLES),
@@ -75,7 +67,6 @@ rule fastqc_trim_1:
     input:
         'data/{db}/trim/{sample}_1/{sample}_1_paired.fastq.gz',
     output:
-        'data/{db}/trim/{sample}_1/fastqc',
         'data/{db}/trim/{sample}_1/fastqc/{sample}_1_paired_fastqc.html'
     resources:
         mem_gb=100
@@ -86,13 +77,12 @@ rule fastqc_trim_1:
     log:
         'logs/fastqc_trim_1_{db}_{sample}.log'
     shell:
-        'src/fastqc.sh {input} {output} >& {log}'
+        'src/fastqc.sh {input} {wildcards.db} trim {wildcards.sample} 1 >& {log}'
 
 rule fastqc_trim_2:
     input:
         'data/{db}/trim/{sample}_2/{sample}_2_paired.fastq.gz',
     output:
-        'data/{db}/trim/{sample}_2/fastqc',
         'data/{db}/trim/{sample}_2/fastqc/{sample}_2_paired_fastqc.html'
     resources:
         mem_gb=100
@@ -103,13 +93,12 @@ rule fastqc_trim_2:
     log:
         'logs/fastqc_trim_2_{db}_{sample}.log'
     shell:
-        'src/fastqc.sh {input} {output} >& {log}'
+        'src/fastqc.sh {input} {wildcards.db} trim {wildcards.sample} 2 >& {log}'
 
 rule fastqc_raw_1:
     input:
         'data/{sample}_1.fastq.gz',
     output:
-        'data/{db}/raw/{sample}_1/fastqc',
         'data/{db}/raw/{sample}_1/fastqc/{sample}_1_fastqc.html'
     resources:
         mem_gb=100
@@ -120,13 +109,12 @@ rule fastqc_raw_1:
     log:
         'logs/fastqc_raw_1_{db}_{sample}.log'
     shell:
-        'src/fastqc.sh {input} {output} >& {log}'
+        'src/fastqc.sh {input} {wildcards.db} raw {wildcards.sample} 1 >& {log}'
 
 rule fastqc_raw_2:
     input:
         'data/{sample}_2.fastq.gz',
     output:
-        'data/{db}/raw/{sample}_2/fastqc',
         'data/{db}/raw/{sample}_2/fastqc/{sample}_2_fastqc.html'
     resources:
         mem_gb=100
@@ -137,4 +125,4 @@ rule fastqc_raw_2:
     log:
         'logs/fastqc_raw_2_{db}_{sample}.log'
     shell:
-        'src/fastqc.sh {input} {output} >& {log}'
+        'src/fastqc.sh {input} {wildcards.db} raw {wildcards.sample} 2 >& {log}'

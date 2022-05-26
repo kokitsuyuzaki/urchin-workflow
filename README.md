@@ -2,9 +2,11 @@
 This workflow consists of five workflows as follows:
 - **workflow/download.smk**: Data downloading
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/download.png?raw=true)
--  **workflow/qc.smk**: Data Quality Check
+-  **workflow/qc.smk**: Data quality check
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/qc.png?raw=true)
-- **workflow/quantification.smk**: Reference-based/free Quantification
+- **workflow/index.smk**: Indexing of genome and transcriptome sequences
+![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/index.png?raw=true)
+- **workflow/quantification.smk**: Reference-based/free quantification
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/quantification.png?raw=true)
 - **workflow/summary.smk**: Summary of the data analysis
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/summary.png?raw=true)
