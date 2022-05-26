@@ -10,4 +10,6 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-fastqc -o data/$1_2/fastqc_trim data/$1_2/$1_2_paired.fastq.gz
+salmon index -t data/echinobase/sp5_0_GCF_transcripts.fa \
+-i data/echinobase/salmon_index \
+-k 31

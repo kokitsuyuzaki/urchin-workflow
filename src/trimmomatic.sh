@@ -13,12 +13,12 @@ SLURM_RESTART_COUNT=2
 trimmomatic PE \
 -threads 4 \
 -phred33 \
--trimlog data/$1_1/log.txt \
-data/$1_1/$1_1.fastq.gz \
-data/$1_2/$1_2.fastq.gz \
-data/$1_1/$1_1_paired.fastq.gz \
-data/$1_1/$1_1_unpaired.fastq.gz \
-data/$1_2/$1_2_paired.fastq.gz \
-data/$1_2/$1_2_unpaired.fastq.gz \
+-trimlog $8 \
+$1 \
+$2 \
+$4 \
+$5 \
+$6 \
+$7 \
 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36 \
-ILLUMINACLIP:data/all_sequencing_WTA_adopters.fa:2:30:10
+ILLUMINACLIP:$3:2:30:10

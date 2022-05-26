@@ -12,7 +12,7 @@ SLURM_RESTART_COUNT=2
 
 STAR --runMode genomeGenerate \
 --runThreadN 4 \
---genomeDir data/star_index \
---genomeFastaFiles data/hpbase/HpulGenome_v1_scaffold.fa \
---sjdbGTFfile data/hpbase/HpulGenome_v1.gff3 \
+--genomeDir data/echinobase/star_index/ \
+--genomeFastaFiles data/echinobase/sp5_0_GCF_genomic.fa \
+--sjdbGTFfile data/echinobase/sp5_0_GCF.gff3 \
 --limitGenomeGenerateRAM 34000000000

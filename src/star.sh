@@ -11,7 +11,7 @@
 SLURM_RESTART_COUNT=2
 
 STAR --runThreadN 4 \
---genomeDir data/star_index \
---readFilesIn data/$1_1/$1_1_paired.fastq.gz data/$1_2/$1_2_paired.fastq.gz \
+--genomeDir $1 \
+--readFilesIn $2 $3 \
 --readFilesCommand zcat \
---outFileNamePrefix data/$1/
+--outFileNamePrefix $4

@@ -10,4 +10,5 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-fastqc -o data/$1_2/fastqc data/$1_2/$1_2.fastq.gz
+cd data/$1/$2
+multiqc .

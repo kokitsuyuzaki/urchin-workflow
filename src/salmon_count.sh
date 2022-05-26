@@ -10,8 +10,8 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-salmon quant -i data/salmon_index \
+salmon quant -i $1 \
 -l A \
--1 data/$1_1/$1_1_paired.fastq.gz \
--2 data/$1_2/$1_2_paired.fastq.gz \
--o data/$1
+-1 $2 \
+-2 $3 \
+-o data/$4/$5/$6

@@ -10,4 +10,6 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-fastqc -o data/$1_1/fastqc data/$1_1/$1_1.fastq.gz
+salmon index -t data/hpbase/HpulTranscriptome.fa \
+-i data/hpbase/salmon_index \
+-k 31
