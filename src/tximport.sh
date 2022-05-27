@@ -10,8 +10,4 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-salmon quant -i $1 \
--l A \
--1 $2 \
--2 $3 \
--o data/$4/$5/$6/salmon
+Rscript src/tximport.R $@

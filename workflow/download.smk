@@ -6,6 +6,8 @@ from snakemake.utils import min_version
 #################################
 min_version("6.5.3")
 
+container: 'docker://koki/urchin_workflow_bioconda:20220527'
+
 URCHIN_SAMPLES = pd.read_table('data/sample_sheet.csv',
     sep=',', dtype='string', header=None)[0]
 URCHIN_SAMPLES = list(set(URCHIN_SAMPLES))
@@ -38,8 +40,6 @@ rule download_macrogen:
         'data/{sample}_2.fastq.gz'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/download_{sample}.txt'
     log:
@@ -52,8 +52,6 @@ rule download_hpbase:
         'data/hpbase/{file}'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/download_hpbase_{file}.txt'
     log:
@@ -66,8 +64,6 @@ rule download_echinobase:
         'data/echinobase/{file}'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/download_echinobase_{file}.txt'
     log:
@@ -80,8 +76,6 @@ rule download_adapter:
         'data/all_sequencing_WTA_adopters.fa'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/download_adapter.txt'
     log:

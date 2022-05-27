@@ -6,5 +6,7 @@
 .fontconfig
 .snakemake
 data
+output
+report
 logs
 benchmarks

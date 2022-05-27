@@ -6,6 +6,8 @@ from snakemake.utils import min_version
 #################################
 min_version("6.5.3")
 
+container: 'docker://koki/urchin_workflow_bioconda:20220527'
+
 rule all:
     input:
         expand('data/{db}/star_index/Log.out',
@@ -24,8 +26,6 @@ rule index_star_hpbase:
         'data/hpbase/star_index/Log.out'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/star_index_hpbase.txt'
     log:
@@ -41,8 +41,6 @@ rule index_star_echinobase:
         'data/echinobase/star_index/Log.out'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/star_index_echinobase.txt'
     log:
@@ -60,8 +58,6 @@ rule index_salmon_hpbase:
         'data/hpbase/salmon_index/sa.bin'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/salmon_index.txt'
     log:
@@ -76,8 +72,6 @@ rule index_salmon_echinobase:
         'data/echinobase/salmon_index/sa.bin'
     resources:
         mem_gb=100
-    container:
-        'docker://koki/urchin_workflow_bioconda:20220525'
     benchmark:
         'benchmarks/salmon_index.txt'
     log:

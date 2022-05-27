@@ -13,31 +13,35 @@ rule all:
         expand('data/{db}/{type}/multiqc_report.html',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw']),
-        # expand('output/{db}/{type}/FeatureCounts.txt',
-        #     db=['hpbase', 'echinobase'],
-        #     type=['trim', 'raw']),
-        # expand('output/{db}/{type}/SalmonCounts.txt',
-        #     db=['hpbase', 'echinobase'],
-        #     type=['trim', 'raw']),
+        expand('output/FeatureCounts_{db}_{type}.txt',
+            db=['hpbase', 'echinobase'],
+            type=['trim', 'raw']),
+        expand('output/SalmonCounts_{db}_{type}.RData',
+            db=['hpbase', 'echinobase'],
+            type=['trim', 'raw'])
 
 #################################
 # Summary
 #################################
 rule multiqc:
     input:
-        expand('data/{db}/{type}/{sample}_1/fastqc/{sample}_1_fastqc.html',
+        expand('data/{db}/raw/{sample}_1/fastqc/{sample}_1_fastqc.html',
+            db=['hpbase', 'echinobase'],
+            sample=URCHIN_SAMPLES),
+        expand('data/{db}/raw/{sample}_2/fastqc/{sample}_2_fastqc.html',
+            db=['hpbase', 'echinobase'],
+            sample=URCHIN_SAMPLES),
+        expand('data/{db}/trim/{sample}_1/fastqc/{sample}_1_paired_fastqc.html',
+            db=['hpbase', 'echinobase'],
+            sample=URCHIN_SAMPLES),
+        expand('data/{db}/trim/{sample}_2/fastqc/{sample}_2_paired_fastqc.html',
+            db=['hpbase', 'echinobase'],
+            sample=URCHIN_SAMPLES),
+        expand('data/{db}/{type}/{sample}/star/Aligned.out.sam',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw'],
             sample=URCHIN_SAMPLES),
-        expand('data/{db}/{type}/{sample}_2/fastqc/{sample}_2_fastqc.html',
-            db=['hpbase', 'echinobase'],
-            type=['trim', 'raw'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/{type}/{sample}/Aligned.out.sam',
-            db=['hpbase', 'echinobase'],
-            type=['trim', 'raw'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/{type}/{sample}/quant.sf',
+        expand('data/{db}/{type}/{sample}/salmon/quant.sf',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw'],
             sample=URCHIN_SAMPLES)
@@ -46,7 +50,7 @@ rule multiqc:
     resources:
         mem_gb=100
     container:
-        'quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
+        'docker://quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
     benchmark:
         'benchmarks/multiqc_{db}_{type}.txt'
     log:
@@ -54,36 +58,40 @@ rule multiqc:
     shell:
         'src/multiqc.sh {wildcards.db} {wildcards.type} >& {log}'
 
-# rule featurecounts_merge:
-#     input:
-#         expand('data/{sample}/Aligned.out.sam',
-#             sample=URCHIN_SAMPLES)
-#     output:
-#         'output/FeatureCounts.txt'
-#     resources:
-#         mem_gb=100
-#     container:
-#         'docker://koki/urchin_workflow_bioconda:20220525'
-#     benchmark:
-#         'benchmarks/featurecounts.txt'
-#     log:
-#         'logs/featurecounts.log'
-#     shell:
-#         'src/featurecounts_merge.sh >& {log}'
-
-rule tximport:
+rule featurecounts_merge:
     input:
-        expand('data/{sample}/quant.sf',
+        expand('data/{db}/{type}/{sample}/star/Aligned.out.sam',
+            db=['hpbase', 'echinobase'],
+            type=['trim', 'raw'],
             sample=URCHIN_SAMPLES)
     output:
-        'output/SalmonCounts.txt'
+        'output/FeatureCounts_{db}_{type}.txt'
     resources:
         mem_gb=100
     container:
-        'docker://koki/urchin_workflow_r:20220525'
+        'docker://koki/urchin_workflow_bioconda:20220527'
     benchmark:
-        'benchmarks/tximport.txt'
+        'benchmarks/featurecounts_merge_{db}_{type}.txt'
     log:
-        'logs/tximport.log'
+        'logs/featurecounts_merge_{db}_{type}.log'
     shell:
-        'src/tximport.sh >& {log}'
+        'src/featurecounts_merge.sh {wildcards.db} {wildcards.type} {output} >& {log}'
+
+rule tximport:
+    input:
+        expand('data/{db}/{type}/{sample}/salmon/quant.sf',
+            db=['hpbase', 'echinobase'],
+            type=['trim', 'raw'],
+            sample=URCHIN_SAMPLES)
+    output:
+        'output/SalmonCounts_{db}_{type}.RData'
+    resources:
+        mem_gb=100
+    container:
+        'docker://koki/urchin_workflow_r:20220527'
+    benchmark:
+        'benchmarks/tximport_{db}_{type}.txt'
+    log:
+        'logs/tximport_{db}_{type}.log'
+    shell:
+        'src/tximport.sh {wildcards.db} {wildcards.type} {output} >& {log}'

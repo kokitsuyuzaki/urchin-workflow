@@ -22,6 +22,6 @@ featureCounts -t exon \
 -F "GFF3" \
 -g "Parent" \
 -a $ANNOTATION \
--o $2 \
-$1 \
+-o $3 \
+data/$1/$2/*/star/Aligned.out.sam \
 --verbose

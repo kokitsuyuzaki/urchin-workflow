@@ -11,4 +11,4 @@
 SLURM_RESTART_COUNT=2
 
 cd data/$1/$2
-multiqc .
+multiqc . --force --verbose

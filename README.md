@@ -6,7 +6,7 @@ This workflow consists of five workflows as follows:
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/qc.png?raw=true)
 - **workflow/index.smk**: Indexing of genome and transcriptome sequences
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/index.png?raw=true)
-- **workflow/quantification.smk**: Reference-based/free quantification
+- **workflow/quantification.smk**: Alignment-based/free quantification
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/quantification.png?raw=true)
 - **workflow/summary.smk**: Summary of the data analysis
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/summary.png?raw=true)

@@ -10,5 +10,10 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-wget -P data/$1 https://data.macrogen.com/~macro3/HiSeq02/20220523/HN00169897/$1_1.fastq.gz
-wget -P data/$1 https://data.macrogen.com/~macro3/HiSeq02/20220523/HN00169897/$1_2.fastq.gz
+FILENAME=(`grep $1 data/sample_sheet.csv | awk -F "," '{print $2}'`)
+URL=(`grep $1 data/sample_sheet.csv | awk -F "," '{print $3}'`)
+
+for i in {0..1}
+do
+    wget -O data/${FILENAME[$i]} ${URL[$i]}
+done

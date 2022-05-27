@@ -9,15 +9,15 @@ min_version("6.5.3")
 rule all:
     input:
 
-
 #################################
-# DEGs, Plots, ...etc
+# DEGs and Plots
 #################################
 # 以降は
-# container: 'docker://koki/urchin_workflow_r:20220525'
+# 'docker://koki/urchin_workflow_r:20220527'
 # を使う
-# tximport
-# DEG: edgeR/DESeq2
-# Enrichment Analysis
 # PCA, t-SNE
-# Plot (Venn diagram, two-D)
+# 2次元プロット
+# DEG: edgeR/DESeq2
+# 棒グラフ（+/-）
+# Enrichment Analysis
+# Excelシートにして、あらゆる情報を渡す
