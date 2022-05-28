@@ -10,7 +10,7 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-if [ $3 = "hpbase" ]; then
+if [ $1 = "hpbase" ]; then
 	ANNOTATION=data/hpbase/HpulGenome_v1.gff3
 else
 	ANNOTATION=data/echinobase/sp5_0_GCF.gff3

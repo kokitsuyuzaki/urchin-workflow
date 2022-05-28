@@ -16,7 +16,10 @@ rule all:
         expand('output/FeatureCounts_{db}_{type}.txt',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw']),
-        expand('output/SalmonCounts_{db}_{type}.RData',
+        expand('output/SalmonCounts_{db}_{type}.txt',
+            db=['hpbase', 'echinobase'],
+            type=['trim', 'raw']),
+        expand('output/SalmonTPMs_{db}_{type}.txt',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw'])
 
@@ -84,11 +87,12 @@ rule tximport:
             type=['trim', 'raw'],
             sample=URCHIN_SAMPLES)
     output:
-        'output/SalmonCounts_{db}_{type}.RData'
+        'output/SalmonCounts_{db}_{type}.txt',
+        'output/SalmonTPMs_{db}_{type}.txt'
     resources:
         mem_gb=100
     container:
-        'docker://koki/urchin_workflow_r:20220527'
+        'docker://koki/urchin_workflow_r:20220528'
     benchmark:
         'benchmarks/tximport_{db}_{type}.txt'
     log:
