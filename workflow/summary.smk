@@ -13,6 +13,9 @@ rule all:
         expand('data/{db}/{type}/multiqc_report.html',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw']),
+        expand('data/{db}/{type}/mapping_rate.txt',
+            db=['hpbase', 'echinobase'],
+            type=['trim', 'raw']),
         expand('output/FeatureCounts_{db}_{type}.txt',
             db=['hpbase', 'echinobase'],
             type=['trim', 'raw']),
@@ -60,6 +63,22 @@ rule multiqc:
         'logs/multiqc_{db}_{type}.log'
     shell:
         'src/multiqc.sh {wildcards.db} {wildcards.type} >& {log}'
+
+rule export_mapping_rate:
+    input:
+        'data/{db}/{type}/multiqc_report.html'
+    output:
+        'data/{db}/{type}/mapping_rate.txt'
+    resources:
+        mem_gb=100
+    container:
+        'docker://quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
+    benchmark:
+        'benchmarks/export_mapping_rate_{db}_{type}.txt'
+    log:
+        'logs/export_mapping_rate_{db}_{type}.log'
+    shell:
+        'src/export_mapping_rate.sh {wildcards.db} {wildcards.type} {output} >& {log}'
 
 rule featurecounts_merge:
     input:

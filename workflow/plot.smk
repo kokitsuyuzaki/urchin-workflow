@@ -6,7 +6,7 @@ from snakemake.utils import min_version
 #################################
 min_version("6.5.3")
 
-container: 'docker://koki/urchin_workflow_r:20220528'
+container: 'docker://koki/urchin_workflow_r:20220531'
 
 COUNTS = ['FeatureCounts', 'SalmonCounts', 'SalmonTPMs']
 DBS = ['hpbase', 'echinobase']
@@ -16,6 +16,10 @@ DEGMETHODS = ['edger', 'deseq2']
 
 rule all:
     input:
+        expand('plot/heatmap/{counts}_{db}_{type}.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
         expand('plot/pca/{counts}_{db}_{type}_coordinates.png',
             counts=COUNTS,
             db=DBS,
@@ -24,7 +28,43 @@ rule all:
             counts=COUNTS,
             db=DBS,
             type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_scatter_w_barycenter.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_scatter_no_exp_genes.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_scatter_mapping_rate.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
         expand('plot/pca/{counts}_{db}_{type}_variance.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_coordinates_wo_2cells.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_scatter_wo_2cells.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_scatter_wo_2cells_no_exp_genes.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_scatter_wo_2cells_mapping_rate.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_scatter_wo_2cells_w_barycenter.png',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('plot/pca/{counts}_{db}_{type}_variance_wo_2cells.png',
             counts=COUNTS,
             db=DBS,
             type=TYPES),
@@ -34,12 +74,31 @@ rule all:
             stage=STAGES),
         "plot/edger/Barplot.png",
         "plot/deseq2/Barplot.png",
+        "plot/edger/VennDiagram.png",
+        "plot/deseq2/VennDiagram.png",
         "output/deg/edgeR.xlsx",
         "output/deg/DESeq2.xlsx"
 
 #################################
 # DEGs, Plots, Reports ... etc
 #################################
+rule heatmap:
+    input:
+        expand("output/{counts}_{db}_{type}.txt",
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES)
+    output:
+        'plot/heatmap/{counts}_{db}_{type}.png'
+    resources:
+        mem_gb=100
+    benchmark:
+        'benchmarks/heatmap_{counts}_{db}_{type}.txt'
+    log:
+        'logs/heatmap_{counts}_{db}_{type}.log'
+    shell:
+        'src/heatmap.sh {wildcards.counts} {wildcards.db} {wildcards.type} {output} >& {log}'
+
 rule pca_featurecounts:
     input:
         expand("output/FeatureCounts_{db}_{type}.txt",
@@ -47,7 +106,9 @@ rule pca_featurecounts:
             type=TYPES)
     output:
         'output/pca/FeatureCounts_{db}_{type}_coordinates.csv',
-        'output/pca/FeatureCounts_{db}_{type}_variance.csv'
+        'output/pca/FeatureCounts_{db}_{type}_variance.csv',
+        'output/pca/FeatureCounts_{db}_{type}_coordinates_wo_2cells.csv',
+        'output/pca/FeatureCounts_{db}_{type}_variance_wo_2cells.csv'
     resources:
         mem_gb=100
     benchmark:
@@ -64,7 +125,9 @@ rule pca_salmoncounts:
             type=TYPES)
     output:
         'output/pca/SalmonCounts_{db}_{type}_coordinates.csv',
-        'output/pca/SalmonCounts_{db}_{type}_variance.csv'
+        'output/pca/SalmonCounts_{db}_{type}_variance.csv',
+        'output/pca/SalmonCounts_{db}_{type}_coordinates_wo_2cells.csv',
+        'output/pca/SalmonCounts_{db}_{type}_variance_wo_2cells.csv'
     resources:
         mem_gb=100
     benchmark:
@@ -81,7 +144,9 @@ rule pca_salmontpms:
             type=TYPES)
     output:
         'output/pca/SalmonTPMs_{db}_{type}_coordinates.csv',
-        'output/pca/SalmonTPMs_{db}_{type}_variance.csv'
+        'output/pca/SalmonTPMs_{db}_{type}_variance.csv',
+        'output/pca/SalmonTPMs_{db}_{type}_coordinates_wo_2cells.csv',
+        'output/pca/SalmonTPMs_{db}_{type}_variance_wo_2cells.csv'
     resources:
         mem_gb=100
     benchmark:
@@ -96,9 +161,14 @@ rule plot_pca_coordinates:
         expand('output/pca/{counts}_{db}_{type}_coordinates.csv',
             counts=COUNTS,
             db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_coordinates_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
             type=TYPES)
     output:
-        'plot/pca/{counts}_{db}_{type}_coordinates.png'
+        'plot/pca/{counts}_{db}_{type}_coordinates.png',
+        'plot/pca/{counts}_{db}_{type}_coordinates_wo_2cells.png'
     resources:
         mem_gb=100
     benchmark:
@@ -117,9 +187,18 @@ rule plot_pca_scatter:
         expand('output/pca/{counts}_{db}_{type}_variance.csv',
             counts=COUNTS,
             db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_coordinates_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
             type=TYPES)
     output:
-        'plot/pca/{counts}_{db}_{type}_scatter.png'
+        'plot/pca/{counts}_{db}_{type}_scatter.png',
+        'plot/pca/{counts}_{db}_{type}_scatter_wo_2cells.png'
     resources:
         mem_gb=100
     benchmark:
@@ -129,14 +208,112 @@ rule plot_pca_scatter:
     shell:
         'src/plot_pca_scatter.sh {wildcards.counts} {wildcards.db} {wildcards.type} {output} >& {log}'
 
+rule plot_pca_scatter_w_barycenter:
+    input:
+        expand('output/pca/{counts}_{db}_{type}_coordinates.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_coordinates_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES)
+    output:
+        'plot/pca/{counts}_{db}_{type}_scatter_w_barycenter.png',
+        'plot/pca/{counts}_{db}_{type}_scatter_wo_2cells_w_barycenter.png'
+    resources:
+        mem_gb=100
+    benchmark:
+        'benchmarks/plot_pca_scatter_w_barycenter_{counts}_{db}_{type}.txt'
+    log:
+        'logs/plot_pca_scatter_w_barycenter_{counts}_{db}_{type}.log'
+    shell:
+        'src/plot_pca_scatter_w_barycenter.sh {wildcards.counts} {wildcards.db} {wildcards.type} {output} >& {log}'
+
+rule plot_pca_scatter_no_exp_genes:
+    input:
+        expand('output/pca/{counts}_{db}_{type}_coordinates.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_coordinates_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES)
+    output:
+        'plot/pca/{counts}_{db}_{type}_scatter_no_exp_genes.png',
+        'plot/pca/{counts}_{db}_{type}_scatter_wo_2cells_no_exp_genes.png'
+    resources:
+        mem_gb=100
+    benchmark:
+        'benchmarks/plot_pca_scatter_no_exp_genes_{counts}_{db}_{type}.txt'
+    log:
+        'logs/plot_pca_scatter_no_exp_genes_{counts}_{db}_{type}.log'
+    shell:
+        'src/plot_pca_scatter_no_exp_genes.sh {wildcards.counts} {wildcards.db} {wildcards.type} {output} >& {log}'
+
+rule plot_pca_scatter_mapping_rate:
+    input:
+        expand('data/{db}/{type}/mapping_rate.txt',
+            db=['hpbase', 'echinobase'],
+            type=['trim', 'raw']),
+        expand('output/pca/{counts}_{db}_{type}_coordinates.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_coordinates_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
+            type=TYPES)
+    output:
+        'plot/pca/{counts}_{db}_{type}_scatter_mapping_rate.png',
+        'plot/pca/{counts}_{db}_{type}_scatter_wo_2cells_mapping_rate.png'
+    resources:
+        mem_gb=100
+    benchmark:
+        'benchmarks/plot_pca_scatter_mapping_rate_{counts}_{db}_{type}.txt'
+    log:
+        'logs/plot_pca_scatter_mapping_rate_{counts}_{db}_{type}.log'
+    shell:
+        'src/plot_pca_scatter_mapping_rate.sh {wildcards.counts} {wildcards.db} {wildcards.type} {output} >& {log}'
+
 rule plot_pca_variance:
     input:
         expand('output/pca/{counts}_{db}_{type}_variance.csv',
             counts=COUNTS,
             db=DBS,
+            type=TYPES),
+        expand('output/pca/{counts}_{db}_{type}_variance_wo_2cells.csv',
+            counts=COUNTS,
+            db=DBS,
             type=TYPES)
     output:
-        'plot/pca/{counts}_{db}_{type}_variance.png'
+        'plot/pca/{counts}_{db}_{type}_variance.png',
+        'plot/pca/{counts}_{db}_{type}_variance_wo_2cells.png'
     resources:
         mem_gb=100
     benchmark:
@@ -225,6 +402,21 @@ rule plot_barplot_edger:
     shell:
         'src/plot_barplot_edger.sh {input} {output} >& {log}'
 
+rule plot_venndiagram_edger:
+    input:
+        expand("output/deg/edger_{stage}_deg.txt",
+            stage=STAGES)
+    output:
+        "plot/edger/VennDiagram.png"
+    resources:
+        mem_gb=100
+    benchmark:
+        'benchmarks/plot_venndiagram_edger.txt'
+    log:
+        'logs/plot_venndiagram_edger.log'
+    shell:
+        'src/plot_venndiagram_edger.sh {input} {output} >& {log}'
+
 rule plot_barplot_deseq2:
     input:
         expand("output/deg/deseq2_{stage}_deg.txt",
@@ -239,6 +431,21 @@ rule plot_barplot_deseq2:
         'logs/plot_barplot_deseq2.log'
     shell:
         'src/plot_barplot_deseq2.sh {input} {output} >& {log}'
+
+rule plot_venndiagram_deseq2:
+    input:
+        expand("output/deg/deseq2_{stage}_deg.txt",
+            stage=STAGES)
+    output:
+        "plot/deseq2/VennDiagram.png"
+    resources:
+        mem_gb=100
+    benchmark:
+        'benchmarks/plot_venndiagram_deseq2.txt'
+    log:
+        'logs/plot_venndiagram_deseq2.log'
+    shell:
+        'src/plot_venndiagram_deseq2.sh {input} {output} >& {log}'
 
 rule xlsx_edger:
     input:

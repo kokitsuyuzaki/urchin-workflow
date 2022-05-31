@@ -1,6 +1,11 @@
 .DS_Store
 *.sh.*
 
+*.log
+*/*.log
+*/*/*.log
+*/*/*/*.log
+*/*/*/*/*.log
 .java
 .cache
 .fontconfig
