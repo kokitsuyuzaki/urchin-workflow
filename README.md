@@ -46,6 +46,8 @@ snakemake -s workflow/qc.smk -j 4 --use-singularity
 snakemake -s workflow/index.smk -j 4 --use-singularity
 snakemake -s workflow/quantification.smk -j 4 --use-singularity
 snakemake -s workflow/summary -j 4 --use-singularity
+snakemake -s workflow/deg.smk -j 4 --use-singularity
+snakemake -s workflow/dimreduct.smk -j 4 --use-singularity
 snakemake -s workflow/plot.smk -j 4 --use-singularity
 ```
 
@@ -57,6 +59,8 @@ snakemake -s workflow/qc.smk -j 32 --cluster qsub --latency-wait 600 --use-singu
 snakemake -s workflow/index.smk -j 32 --cluster qsub --latency-wait 600 --use-singularity
 snakemake -s workflow/quantification.smk -j 32 --cluster qsub --latency-wait 600 --use-singularity
 snakemake -s workflow/summary -j 32 --cluster qsub --latency-wait 600 --use-singularity
+snakemake -s workflow/deg.smk -j 32 --cluster qsub --latency-wait 600 --use-singularity
+snakemake -s workflow/dimreduct.smk -j 32 --cluster qsub --latency-wait 600 --use-singularity
 snakemake -s workflow/plot.smk -j 32 --cluster qsub --latency-wait 600 --use-singularity
 ```
 
@@ -68,6 +72,8 @@ snakemake -s workflow/qc.smk -j 32 --cluster sbatch --latency-wait 600 --use-sin
 snakemake -s workflow/index.smk -j 32 --cluster sbatch --latency-wait 600 --use-singularity
 snakemake -s workflow/quantification.smk -j 32 --cluster sbatch --latency-wait 600 --use-singularity
 snakemake -s workflow/summary -j 32 --cluster sbatch --latency-wait 600 --use-singularity
+snakemake -s workflow/deg.smk -j 32 --cluster sbatch --latency-wait 600 --use-singularity
+snakemake -s workflow/dimreduct.smk -j 32 --cluster sbatch --latency-wait 600 --use-singularity
 snakemake -s workflow/plot.smk -j 32 --cluster sbatch --latency-wait 600 --use-singularity
 ```
 
