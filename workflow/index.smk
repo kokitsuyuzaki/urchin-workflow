@@ -13,7 +13,7 @@ rule all:
         expand('data/{db}/star_index/Log.out',
             db=['hpbase', 'echinobase']),
         expand('data/{db}/salmon_index/sa.bin',
-            db=['hpbase', 'echinobase'])
+            db=['hpbase', 'hpbase_nucl', 'echinobase'])
 
 #################################
 # Alignment-based Quantification
@@ -59,11 +59,25 @@ rule index_salmon_hpbase:
     resources:
         mem_gb=100
     benchmark:
-        'benchmarks/salmon_index.txt'
+        'benchmarks/index_salmon_hpbase.txt'
     log:
-        'logs/salmon_index.log'
+        'logs/index_salmon_hpbase.log'
     shell:
-        'src/salmon_index_hpbase.sh >& {log}'
+        'src/index_salmon_hpbase.sh >& {log}'
+
+rule index_salmon_hpbase_nucl:
+    input:
+        'data/hpbase/HpulTranscriptome_nucl.fa'
+    output:
+        'data/hpbase_nucl/salmon_index/sa.bin'
+    resources:
+        mem_gb=100
+    benchmark:
+        'benchmarks/index_salmon_hpbase_nucl.txt'
+    log:
+        'logs/index_salmon_hpbase_nucl.log'
+    shell:
+        'src/index_salmon_hpbase_nucl.sh >& {log}'
 
 rule index_salmon_echinobase:
     input:
@@ -73,8 +87,8 @@ rule index_salmon_echinobase:
     resources:
         mem_gb=100
     benchmark:
-        'benchmarks/salmon_index.txt'
+        'benchmarks/index_salmon_echinobase.txt'
     log:
-        'logs/salmon_index.log'
+        'logs/index_salmon_echinobase.log'
     shell:
-        'src/salmon_index_echinobase.sh >& {log}'
+        'src/index_salmon_echinobase.sh >& {log}'

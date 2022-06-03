@@ -8,7 +8,12 @@ outfile3 <- commandArgs(trailingOnly=TRUE)[4]
 stage <- commandArgs(trailingOnly=TRUE)[5]
 
 # Loading
-count <- read.table(infile)
+count <- read.table(infile, header=TRUE)
+
+# Preprocessing
+row_names <- count[,1]
+count <- as.matrix(count[, 7:33])
+rownames(count) <- row_names
 
 # Setting
 group <- factor(c(rep("control", 3), rep("half", 3)))

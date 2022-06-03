@@ -9,36 +9,18 @@ min_version("6.5.3")
 container: 'docker://koki/urchin_workflow_bioconda:20220527'
 
 URCHIN_SAMPLES, = glob_wildcards('data/{sample}_1.fastq.gz')
+DBS = ['hpbase', 'echinobase']
 
 rule all:
     input:
         expand('data/{db}/trim/{sample}_1/fastqc/{sample}_1_paired_fastqc.html',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
+            db=DBS, sample=URCHIN_SAMPLES),
         expand('data/{db}/trim/{sample}_2/fastqc/{sample}_2_paired_fastqc.html',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
+            db=DBS, sample=URCHIN_SAMPLES),
         expand('data/{db}/raw/{sample}_1/fastqc/{sample}_1_fastqc.html',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
+            db=DBS, sample=URCHIN_SAMPLES),
         expand('data/{db}/raw/{sample}_2/fastqc/{sample}_2_fastqc.html',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/trim/{sample}_1/{sample}_1_paired.fastq.gz',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/trim/{sample}_1/{sample}_1_unpaired.fastq.gz',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/trim/{sample}_2/{sample}_2_paired.fastq.gz',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/trim/{sample}_2/{sample}_2_unpaired.fastq.gz',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES),
-        expand('data/{db}/trim/{sample}/trim_out.log',
-            db=['hpbase', 'echinobase'],
-            sample=URCHIN_SAMPLES)
+            db=DBS, sample=URCHIN_SAMPLES),
 
 #################################
 # QC, Trimming
@@ -49,23 +31,23 @@ rule trimmomatic:
         'data/{sample}_2.fastq.gz',
         'data/all_sequencing_WTA_adopters.fa'
     output:
-        'data/{db}/trim/{sample}_1/{sample}_1_paired.fastq.gz',
-        'data/{db}/trim/{sample}_1/{sample}_1_unpaired.fastq.gz',
-        'data/{db}/trim/{sample}_2/{sample}_2_paired.fastq.gz',
-        'data/{db}/trim/{sample}_2/{sample}_2_unpaired.fastq.gz',
-        'data/{db}/trim/{sample}/trim_out.log'
+        'data/{sample}_1_paired.fastq.gz',
+        'data/{sample}_1_unpaired.fastq.gz',
+        'data/{sample}_2_paired.fastq.gz',
+        'data/{sample}_2_unpaired.fastq.gz',
+        'data/trim/{sample}/trim_out.log'
     resources:
         mem_gb=100
     benchmark:
-        'benchmarks/trimmomatic_{db}_{sample}.txt'
+        'benchmarks/trimmomatic_{sample}.txt'
     log:
-        'logs/trimmomatic_{db}_{sample}.log'
+        'logs/trimmomatic_{sample}.log'
     shell:
         'src/trimmomatic.sh {input} {output} >& {log}'
 
 rule fastqc_trim_1:
     input:
-        'data/{db}/trim/{sample}_1/{sample}_1_paired.fastq.gz',
+        'data/{sample}_1_paired.fastq.gz',
     output:
         'data/{db}/trim/{sample}_1/fastqc/{sample}_1_paired_fastqc.html'
     resources:
@@ -79,7 +61,7 @@ rule fastqc_trim_1:
 
 rule fastqc_trim_2:
     input:
-        'data/{db}/trim/{sample}_2/{sample}_2_paired.fastq.gz',
+        'data/{sample}_2_paired.fastq.gz',
     output:
         'data/{db}/trim/{sample}_2/fastqc/{sample}_2_paired_fastqc.html'
     resources:

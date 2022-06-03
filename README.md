@@ -20,6 +20,14 @@ This workflow consists of five workflows as follows:
 
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/summary.png?raw=true)
 
+- **workflow/deg.smk**: Differential expressed genes detection
+
+![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/deg.png?raw=true)
+
+- **workflow/dimreduct.smk**: Dimension reduction
+
+![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/dimreduct.png?raw=true)
+
 - **workflow/plot.smk**: Visualization
 
 ![](https://github.com/kokitsuyuzaki/urchin-workflow/blob/master/plot/plot.png?raw=true)
