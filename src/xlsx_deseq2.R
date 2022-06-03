@@ -13,22 +13,24 @@ deg_14h <- read.table(infile2)
 deg_18h <- read.table(infile3)
 deg_24h <- read.table(infile4)
 
-deg_11h <- cbind(deg_11h, id=rownames(deg_11h))
-deg_14h <- cbind(deg_14h, id=rownames(deg_14h))
-deg_18h <- cbind(deg_18h, id=rownames(deg_18h))
-deg_24h <- cbind(deg_24h, id=rownames(deg_24h))
+deg_11h <- cbind(deg_11h, id=gsub("-mRNA.*", "", rownames(deg_11h)))
+deg_14h <- cbind(deg_14h, id=gsub("-mRNA.*", "", rownames(deg_14h)))
+deg_18h <- cbind(deg_18h, id=gsub("-mRNA.*", "", rownames(deg_18h)))
+deg_24h <- cbind(deg_24h, id=gsub("-mRNA.*", "", rownames(deg_24h)))
 
 # HpBase Annotation
 annotation <- read.delim("data/hpbase/HpulGenome_v1_annot.tsv",
     header=TRUE)
-annotation <- cbind(annotation,
-    id=gsub("\\|.*", "", annotation[, "HPU_transcriptome_besthit"]))
 
 # Merge
-out_11h <- merge(deg_11h, annotation, by="id", all.x=TRUE)
-out_14h <- merge(deg_14h, annotation, by="id", all.x=TRUE)
-out_18h <- merge(deg_18h, annotation, by="id", all.x=TRUE)
-out_24h <- merge(deg_24h, annotation, by="id", all.x=TRUE)
+out_11h <- merge(deg_11h, annotation, by.x="id",
+    by.y="HPU_gene_id", all.x=TRUE)
+out_14h <- merge(deg_14h, annotation, by.x="id",
+    by.y="HPU_gene_id", all.x=TRUE)
+out_18h <- merge(deg_18h, annotation, by.x="id",
+    by.y="HPU_gene_id", all.x=TRUE)
+out_24h <- merge(deg_24h, annotation, by.x="id",
+    by.y="HPU_gene_id", all.x=TRUE)
 
 # Direction
 out_11h_pos <- out_11h[which(out_11h$log2FoldChange > 0), ]
