@@ -6,7 +6,7 @@ from snakemake.utils import min_version
 #################################
 min_version("6.5.3")
 
-container: 'docker://koki/urchin_workflow_r:20220531'
+container: 'docker://koki/urchin_workflow_r:20250116'
 
 COUNTS = ['FeatureCounts', 'SalmonCounts', 'SalmonTPMs']
 DBS1 = ['hpbase', 'echinobase']
@@ -109,7 +109,7 @@ rule heatmap_featurecounts:
     output:
         'plot/heatmap/FeatureCounts_{db1}_{type}.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/heatmap_FeatureCounts_{db1}_{type}.txt'
     log:
@@ -124,7 +124,7 @@ rule heatmap_salmoncounts:
     output:
         'plot/heatmap/SalmonCounts_{db2}_{type}.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/heatmap_SalmonCounts_{db2}_{type}.txt'
     log:
@@ -139,7 +139,7 @@ rule heatmap_salmontpms:
     output:
         'plot/heatmap/SalmonTPMs_{db2}_{type}.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/heatmap_SalmonTPMs_{db2}_{type}.txt'
     log:
@@ -157,7 +157,7 @@ rule plot_pca_coordinates_featurecounts:
         'plot/pca/FeatureCounts_{db1}_{type}_coordinates.png',
         'plot/pca/FeatureCounts_{db1}_{type}_coordinates_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_coordinates_FeatureCounts_{db1}_{type}.txt'
     log:
@@ -175,7 +175,7 @@ rule plot_pca_coordinates_salmoncounts:
         'plot/pca/SalmonCounts_{db2}_{type}_coordinates.png',
         'plot/pca/SalmonCounts_{db2}_{type}_coordinates_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_coordinates_SalmonCounts_{db2}_{type}.txt'
     log:
@@ -193,7 +193,7 @@ rule plot_pca_coordinates_salmontpms:
         'plot/pca/SalmonTPMs_{db2}_{type}_coordinates.png',
         'plot/pca/SalmonTPMs_{db2}_{type}_coordinates_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_coordinates_SalmonTPMs_{db2}_{type}.txt'
     log:
@@ -215,7 +215,7 @@ rule plot_pca_scatter_featurecounts:
         'plot/pca/FeatureCounts_{db1}_{type}_scatter.png',
         'plot/pca/FeatureCounts_{db1}_{type}_scatter_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_FeatureCounts_{db1}_{type}.txt'
     log:
@@ -237,7 +237,7 @@ rule plot_pca_scatter_salmoncounts:
         'plot/pca/SalmonCounts_{db2}_{type}_scatter.png',
         'plot/pca/SalmonCounts_{db2}_{type}_scatter_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_SalmonCounts_{db2}_{type}.txt'
     log:
@@ -259,7 +259,7 @@ rule plot_pca_scatter_salmontpms:
         'plot/pca/SalmonTPMs_{db2}_{type}_scatter.png',
         'plot/pca/SalmonTPMs_{db2}_{type}_scatter_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_SalmonTPMs_{db2}_{type}.txt'
     log:
@@ -281,7 +281,7 @@ rule plot_pca_scatter_w_barycenter_featurecounts:
         'plot/pca/FeatureCounts_{db1}_{type}_scatter_w_barycenter.png',
         'plot/pca/FeatureCounts_{db1}_{type}_scatter_wo_2cells_w_barycenter.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_w_barycenter_FeatureCounts_{db1}_{type}.txt'
     log:
@@ -303,7 +303,7 @@ rule plot_pca_scatter_w_barycenter_salmoncounts:
         'plot/pca/SalmonCounts_{db2}_{type}_scatter_w_barycenter.png',
         'plot/pca/SalmonCounts_{db2}_{type}_scatter_wo_2cells_w_barycenter.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_w_barycenter_SalmonCounts_{db2}_{type}.txt'
     log:
@@ -325,7 +325,7 @@ rule plot_pca_scatter_w_barycenter_salmontpms:
         'plot/pca/SalmonTPMs_{db2}_{type}_scatter_w_barycenter.png',
         'plot/pca/SalmonTPMs_{db2}_{type}_scatter_wo_2cells_w_barycenter.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_w_barycenter_SalmonTPMs_{db2}_{type}.txt'
     log:
@@ -347,7 +347,7 @@ rule plot_pca_scatter_no_exp_genes_featurecounts:
         'plot/pca/FeatureCounts_{db1}_{type}_scatter_no_exp_genes.png',
         'plot/pca/FeatureCounts_{db1}_{type}_scatter_wo_2cells_no_exp_genes.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_no_exp_genes_FeatureCounts_{db1}_{type}.txt'
     log:
@@ -369,7 +369,7 @@ rule plot_pca_scatter_no_exp_genes_salmoncounts:
         'plot/pca/SalmonCounts_{db2}_{type}_scatter_no_exp_genes.png',
         'plot/pca/SalmonCounts_{db2}_{type}_scatter_wo_2cells_no_exp_genes.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_no_exp_genes_SalmonCounts_{db2}_{type}.txt'
     log:
@@ -391,7 +391,7 @@ rule plot_pca_scatter_no_exp_genes_salmontpms:
         'plot/pca/SalmonTPMs_{db2}_{type}_scatter_no_exp_genes.png',
         'plot/pca/SalmonTPMs_{db2}_{type}_scatter_wo_2cells_no_exp_genes.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_no_exp_genes_SalmonTPMs_{db2}_{type}.txt'
     log:
@@ -415,7 +415,7 @@ rule plot_pca_scatter_mapping_rate:
         'plot/pca/{counts}_{db1}_{type}_scatter_mapping_rate.png',
         'plot/pca/{counts}_{db1}_{type}_scatter_wo_2cells_mapping_rate.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_scatter_mapping_rate_{counts}_{db1}_{type}.txt'
     log:
@@ -433,7 +433,7 @@ rule plot_pca_variance_featurecounts:
         'plot/pca/FeatureCounts_{db1}_{type}_variance.png',
         'plot/pca/FeatureCounts_{db1}_{type}_variance_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_variance_FeatureCounts_{db1}_{type}.txt'
     log:
@@ -451,7 +451,7 @@ rule plot_pca_variance_salmoncounts:
         'plot/pca/SalmonCounts_{db2}_{type}_variance.png',
         'plot/pca/SalmonCounts_{db2}_{type}_variance_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_variance_SalmonCounts_{db2}_{type}.txt'
     log:
@@ -469,7 +469,7 @@ rule plot_pca_variance_salmontpms:
         'plot/pca/SalmonTPMs_{db2}_{type}_variance.png',
         'plot/pca/SalmonTPMs_{db2}_{type}_variance_wo_2cells.png'
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_pca_variance_SalmonTPMs_{db2}_{type}.txt'
     log:
@@ -485,7 +485,7 @@ rule plot_maplot_edger:
     output:
         "plot/edger/MAplot_{stage}.png"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_maplot_edger_{stage}.txt'
     log:
@@ -501,7 +501,7 @@ rule plot_maplot_deseq2:
     output:
         "plot/deseq2/MAplot_{stage}.png"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_maplot_deseq2_{stage}.txt'
     log:
@@ -516,7 +516,7 @@ rule plot_barplot_edger:
     output:
         "plot/edger/Barplot.png"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_barplot_edger.txt'
     log:
@@ -531,7 +531,7 @@ rule plot_barplot_deseq2:
     output:
         "plot/deseq2/Barplot.png"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_barplot_deseq2.txt'
     log:
@@ -546,7 +546,7 @@ rule plot_venndiagram_edger:
     output:
         "plot/edger/VennDiagram.png"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_venndiagram_edger.txt'
     log:
@@ -561,7 +561,7 @@ rule plot_venndiagram_deseq2:
     output:
         "plot/deseq2/VennDiagram.png"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/plot_venndiagram_deseq2.txt'
     log:
@@ -576,7 +576,7 @@ rule xlsx_edger:
     output:
         "output/deg/edgeR.xlsx"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/xlsx_edger.txt'
     log:
@@ -591,7 +591,7 @@ rule xlsx_deseq2:
     output:
         "output/deg/DESeq2.xlsx"
     resources:
-        mem_gb=100
+        mem_mb=10000000
     benchmark:
         'benchmarks/xlsx_deseq2.txt'
     log:

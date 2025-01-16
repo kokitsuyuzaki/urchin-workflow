@@ -25,7 +25,7 @@ rule index_star_hpbase:
     output:
         'data/hpbase/star_index/Log.out'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/star_index_hpbase.txt'
     log:
@@ -40,7 +40,7 @@ rule index_star_echinobase:
     output:
         'data/echinobase/star_index/Log.out'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/star_index_echinobase.txt'
     log:
@@ -57,7 +57,7 @@ rule index_salmon_hpbase:
     output:
         'data/hpbase/salmon_index/sa.bin'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/index_salmon_hpbase.txt'
     log:
@@ -71,7 +71,7 @@ rule index_salmon_hpbase_nucl:
     output:
         'data/hpbase_nucl/salmon_index/sa.bin'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/index_salmon_hpbase_nucl.txt'
     log:
@@ -85,7 +85,7 @@ rule index_salmon_echinobase:
     output:
         'data/echinobase/salmon_index/sa.bin'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/index_salmon_echinobase.txt'
     log:

@@ -54,7 +54,7 @@ rule pca_featurecounts:
         'output/pca/FeatureCounts_{db1}_{type}_coordinates_wo_2cells.csv',
         'output/pca/FeatureCounts_{db1}_{type}_variance_wo_2cells.csv'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/pca_featurecounts_{db1}_{type}.txt'
     log:
@@ -73,7 +73,7 @@ rule pca_salmoncounts:
         'output/pca/SalmonCounts_{db2}_{type}_coordinates_wo_2cells.csv',
         'output/pca/SalmonCounts_{db2}_{type}_variance_wo_2cells.csv'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/pca_salmoncounts_{db2}_{type}.txt'
     log:
@@ -92,7 +92,7 @@ rule pca_salmontpms:
         'output/pca/SalmonTPMs_{db2}_{type}_coordinates_wo_2cells.csv',
         'output/pca/SalmonTPMs_{db2}_{type}_variance_wo_2cells.csv'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/pca_salmontpms_{db2}_{type}.txt'
     log:

@@ -8,7 +8,7 @@ min_version("6.5.3")
 
 container: 'docker://koki/urchin_workflow_bioconda:20220527'
 
-URCHIN_SAMPLES, = glob_wildcards('data/{sample}_1.fastq.gz')
+URCHIN_SAMPLES, = glob_wildcards('data/220524_RNAseq/{sample}_1.fastq')
 TYPES = ['trim', 'raw']
 DBS1 = ['hpbase', 'echinobase']
 DBS2 = ['hpbase', 'hpbase_nucl', 'echinobase']
@@ -28,12 +28,12 @@ rule all:
 rule star_raw:
     input:
         'data/{db1}/star_index',
-        'data/{sample}_1.fastq.gz',
-        'data/{sample}_2.fastq.gz'
+        'data/220524_RNAseq/{sample}_1.fastq',
+        'data/220524_RNAseq/{sample}_2.fastq'
     output:
         'data/{db1}/raw/{sample}/star/Aligned.out.sam'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/star_raw_{db1}_{sample}.txt'
     log:
@@ -44,12 +44,12 @@ rule star_raw:
 rule star_trim:
     input:
         'data/{db1}/star_index',
-        'data/{db1}/trim/{sample}_1/{sample}_1_paired.fastq.gz',
-        'data/{db1}/trim/{sample}_2/{sample}_2_paired.fastq.gz'
+        'data/{sample}_1_paired.fastq.gz',
+        'data/{sample}_2_paired.fastq.gz'
     output:
         'data/{db1}/trim/{sample}/star/Aligned.out.sam'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/star_trim_{db1}_{sample}.txt'
     log:
@@ -63,7 +63,7 @@ rule featurecounts:
     output:
         'data/{db1}/{type}/{sample}/featurecounts/featurecounts.summary'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/featurecounts_{db1}_{type}_{sample}.txt'
     log:
@@ -77,12 +77,12 @@ rule featurecounts:
 rule salmon_count_raw:
     input:
         'data/{db2}/salmon_index',
-        'data/{sample}_1.fastq.gz',
-        'data/{sample}_2.fastq.gz'
+        'data/220524_RNAseq/{sample}_1.fastq',
+        'data/220524_RNAseq/{sample}_2.fastq'
     output:
         'data/{db2}/raw/{sample}/salmon/quant.sf'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/salmon_count_{db2}_raw_{sample}.txt'
     log:
@@ -98,7 +98,7 @@ rule salmon_count_trim:
     output:
         'data/{db2}/trim/{sample}/salmon/quant.sf'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/salmon_count_{db2}_trim_{sample}.txt'
     log:

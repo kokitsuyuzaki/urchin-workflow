@@ -6,7 +6,8 @@ from snakemake.utils import min_version
 #################################
 min_version("6.5.3")
 
-URCHIN_SAMPLES, = glob_wildcards('data/{sample}_1.fastq.gz')
+URCHIN_SAMPLES, = glob_wildcards('data/220524_RNAseq/{sample}_1.fastq')
+
 TYPES = ['trim', 'raw']
 DBS1 = ['hpbase', 'echinobase']
 DBS2 = ['hpbase', 'hpbase_nucl', 'echinobase']
@@ -44,7 +45,7 @@ rule multiqc:
     output:
         'data/{db1}/{type}/multiqc_report.html'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     container:
         'docker://quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
     benchmark:
@@ -60,7 +61,7 @@ rule export_mapping_rate:
     output:
         'data/{db1}/{type}/mapping_rate.txt'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     container:
         'docker://quay.io/biocontainers/multiqc:1.12--pyhdfd78af_0'
     benchmark:
@@ -77,7 +78,7 @@ rule featurecounts_merge:
     output:
         'output/FeatureCounts_{db1}_{type}.txt'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     container:
         'docker://koki/urchin_workflow_bioconda:20220527'
     benchmark:
@@ -95,7 +96,7 @@ rule tximport:
         'output/SalmonCounts_{db2}_{type}.txt',
         'output/SalmonTPMs_{db2}_{type}.txt'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     container:
         'docker://koki/urchin_workflow_r:20220531'
     benchmark:

@@ -21,10 +21,10 @@ ECHINOBASE_FILES = ['sp5_0_GCF_genomic.fa',
 
 rule all:
     input:
-        expand('data/{sample}_1.fastq.gz',
-            sample=URCHIN_SAMPLES),
-        expand('data/{sample}_2.fastq.gz',
-            sample=URCHIN_SAMPLES),
+        # expand('data/220524_RNAseq/{sample}_1.fastq',
+        #     sample=URCHIN_SAMPLES),
+        # expand('data/220524_RNAseq/{sample}_2.fastq',
+        #     sample=URCHIN_SAMPLES),
         expand('data/hpbase/{file}',
             file=HPBASE_FILES),
         expand('data/echinobase/{file}',
@@ -39,7 +39,7 @@ rule download_macrogen:
         'data/{sample}_1.fastq.gz',
         'data/{sample}_2.fastq.gz'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/download_{sample}.txt'
     log:
@@ -51,7 +51,7 @@ rule download_hpbase:
     output:
         'data/hpbase/{file}'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/download_hpbase_{file}.txt'
     log:
@@ -63,7 +63,7 @@ rule download_echinobase:
     output:
         'data/echinobase/{file}'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/download_echinobase_{file}.txt'
     log:
@@ -75,7 +75,7 @@ rule download_adapter:
     output:
         'data/all_sequencing_WTA_adopters.fa'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/download_adapter.txt'
     log:

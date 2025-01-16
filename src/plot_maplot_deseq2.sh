@@ -10,4 +10,6 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
+export R_LIBS_USER="/usr/local/lib/R/site-library"
+export R_LIBS_SITE=""
 Rscript src/plot_maplot_deseq2.R $@

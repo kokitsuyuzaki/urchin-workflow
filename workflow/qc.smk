@@ -8,7 +8,7 @@ min_version("6.5.3")
 
 container: 'docker://koki/urchin_workflow_bioconda:20220527'
 
-URCHIN_SAMPLES, = glob_wildcards('data/{sample}_1.fastq.gz')
+URCHIN_SAMPLES, = glob_wildcards('data/220524_RNAseq/{sample}_1.fastq')
 DBS = ['hpbase', 'echinobase']
 
 rule all:
@@ -27,8 +27,8 @@ rule all:
 #################################
 rule trimmomatic:
     input:
-        'data/{sample}_1.fastq.gz',
-        'data/{sample}_2.fastq.gz',
+        'data/220524_RNAseq/{sample}_1.fastq',
+        'data/220524_RNAseq/{sample}_2.fastq',
         'data/all_sequencing_WTA_adopters.fa'
     output:
         'data/{sample}_1_paired.fastq.gz',
@@ -37,7 +37,7 @@ rule trimmomatic:
         'data/{sample}_2_unpaired.fastq.gz',
         'data/trim/{sample}/trim_out.log'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/trimmomatic_{sample}.txt'
     log:
@@ -51,7 +51,7 @@ rule fastqc_trim_1:
     output:
         'data/{db}/trim/{sample}_1/fastqc/{sample}_1_paired_fastqc.html'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/fastqc_trim_1_{db}_{sample}.txt'
     log:
@@ -65,7 +65,7 @@ rule fastqc_trim_2:
     output:
         'data/{db}/trim/{sample}_2/fastqc/{sample}_2_paired_fastqc.html'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/fastqc_trim_2_{db}_{sample}.txt'
     log:
@@ -75,11 +75,11 @@ rule fastqc_trim_2:
 
 rule fastqc_raw_1:
     input:
-        'data/{sample}_1.fastq.gz',
+        'data/220524_RNAseq/{sample}_1.fastq',
     output:
         'data/{db}/raw/{sample}_1/fastqc/{sample}_1_fastqc.html'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/fastqc_raw_1_{db}_{sample}.txt'
     log:
@@ -89,11 +89,11 @@ rule fastqc_raw_1:
 
 rule fastqc_raw_2:
     input:
-        'data/{sample}_2.fastq.gz',
+        'data/220524_RNAseq/{sample}_2.fastq',
     output:
         'data/{db}/raw/{sample}_2/fastqc/{sample}_2_fastqc.html'
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/fastqc_raw_2_{db}_{sample}.txt'
     log:

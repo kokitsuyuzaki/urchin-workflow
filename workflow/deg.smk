@@ -31,7 +31,7 @@ rule deg_edger:
         "output/deg/edger/FeatureCounts_hpbase_trim_{stage}_all.txt",
         "output/deg/edger/FeatureCounts_hpbase_trim_{stage}_deg.txt",
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/deg_edger_{stage}.txt'
     log:
@@ -47,7 +47,7 @@ rule deg_deseq2:
         "output/deg/deseq2/FeatureCounts_hpbase_trim_{stage}_all.txt",
         "output/deg/deseq2/FeatureCounts_hpbase_trim_{stage}_deg.txt",
     resources:
-        mem_gb=100
+        mem_mb=1000000
     benchmark:
         'benchmarks/deg_deseq2_{stage}.txt'
     log:

@@ -10,4 +10,11 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
+export R_LIBS_USER="/usr/local/lib/R/site-library"
+export R_LIBS_SITE=""
+
 Rscript src/heatmap.R $@
+if [ $? -ne 0 ]; then
+    touch $4
+fi
+

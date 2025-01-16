@@ -10,10 +10,6 @@
 #SBATCH -p node03-06
 SLURM_RESTART_COUNT=2
 
-if [ $1 = "sp5_0_GCF_genomic.fa" ]; then
-    wget -P data/echinobase/ http://ftp.echinobase.org/pub/Genomics/Spur5.0/sp5_0_GCF_genomic.fa.gz --no-check-certificate
-    cd data/echinobase
-    gunzip sp5_0_GCF_genomic.fa.gz
-else
-    wget -P data/echinobase/ http://ftp.echinobase.org/pub/Genomics/Spur5.0/$1 --no-check-certificate
-fi
+wget -P data/echinobase/ https://download.echinobase.org/echinobase/Genomics/Spur5.0/$1".gz" --no-check-certificate
+cd data/echinobase
+gunzip $1".gz"

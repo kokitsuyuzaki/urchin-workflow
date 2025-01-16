@@ -19,8 +19,7 @@ deg_18h <- cbind(deg_18h, id=gsub("-mRNA.*", "", rownames(deg_18h)))
 deg_24h <- cbind(deg_24h, id=gsub("-mRNA.*", "", rownames(deg_24h)))
 
 # HpBase Annotation
-annotation <- read.delim("data/hpbase/HpulGenome_v1_annot.tsv",
-    header=TRUE)
+annotation <- read.xlsx("data/hpbase/HpulGenome_v1_annot.xlsx", sheet=1)
 
 # Merge
 out_11h <- merge(deg_11h, annotation, by.x="id",
@@ -43,19 +42,25 @@ out_24h_pos <- out_24h[which(out_24h$logFC > 0), ]
 out_24h_neg <- out_24h[which(out_24h$logFC < 0), ]
 
 # Save
-write.xlsx(out_11h_pos, file=outfile, sheetName="11h_pos",
-    row.names=FALSE)
-write.xlsx(out_11h_neg, file=outfile, sheetName="11h_neg",
-    row.names=FALSE, append=TRUE)
-write.xlsx(out_14h_pos, file=outfile, sheetName="14h_pos",
-    row.names=FALSE, append=TRUE)
-write.xlsx(out_14h_neg, file=outfile, sheetName="14h_neg",
-    row.names=FALSE, append=TRUE)
-write.xlsx(out_18h_pos, file=outfile, sheetName="18h_pos",
-    row.names=FALSE, append=TRUE)
-write.xlsx(out_18h_neg, file=outfile, sheetName="18h_neg",
-    row.names=FALSE, append=TRUE)
-write.xlsx(out_24h_pos, file=outfile, sheetName="24h_pos",
-    row.names=FALSE, append=TRUE)
-write.xlsx(out_24h_neg, file=outfile, sheetName="24h_neg",
-    row.names=FALSE, append=TRUE)
+wb <- createWorkbook()
+addWorksheet(wb, "11h_pos")
+writeData(wb, "11h_pos", out_11h_pos)
+addWorksheet(wb, "11h_neg")
+writeData(wb, "11h_neg", out_11h_neg)
+
+addWorksheet(wb, "14h_pos")
+writeData(wb, "14h_pos", out_14h_pos)
+addWorksheet(wb, "14h_neg")
+writeData(wb, "14h_neg", out_14h_neg)
+
+addWorksheet(wb, "18h_pos")
+writeData(wb, "18h_pos", out_18h_pos)
+addWorksheet(wb, "18h_neg")
+writeData(wb, "18h_neg", out_18h_neg)
+
+addWorksheet(wb, "24h_pos")
+writeData(wb, "24h_pos", out_24h_pos)
+addWorksheet(wb, "24h_neg")
+writeData(wb, "24h_neg", out_24h_neg)
+
+saveWorkbook(wb, outfile, overwrite=TRUE)
